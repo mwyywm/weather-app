@@ -6,11 +6,11 @@ const kelvinToCelsius = (kelvin) => {
 
 const WeatherBox = ({ weather }) => {
   return (
-    <div>
-      <div className="bruv">
+    <div className="weatherdiv">
+      <div className="topdiv">
         <p>{`${weather.name}, ${weather.sys.country}`}</p>
       </div>
-      <div className="bottom">
+      <div className="bottomdiv">
         <p>Today</p>
         <p>{`${Math.round(kelvinToCelsius(weather.main.temp))}°C`} </p>
         <img
