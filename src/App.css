@@ -12,6 +12,7 @@ body {
   line-height: normal;
 }
 :root {
+  overflow-x: hidden;
   background-color: #18181d;
 }
 .page {
