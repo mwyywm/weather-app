@@ -4,45 +4,61 @@ import "./App.css";
 import axios from "axios";
 
 function App() {
-  const [searchCity, setSearchCity] = useState("");
+  const [searchedCity, setSearchedCity] = useState("");
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState({});
 
+  const [paragraph, setParagraph] = useState("Search for a city!");
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${searchCity}&APPID=${process.env.REACT_APP_API_KEY}`
-      )
-      .then((res) => {
-        setWeather(res.data);
-        // console.log("res.data:", res.data);
-      })
-      .catch((err) => {
-        setWeather("");
-        // console.log("err:", err);
-      });
-  }, [searchCity]);
+    // useEffect was called when the site was launched so I had to wrap it in a if statement.
+    if (searchedCity.length > 0) {
+      axios
+        .get(
+          `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&APPID=${process.env.REACT_APP_API_KEY}`
+        )
+        .then((res) => {
+          setWeather(res.data);
+          setIsLoading(true);
+          // console.log(`res.data: ${JSON.stringify(res.data)}`);
+        })
+        .catch((err) => {
+          console.log(`Error: ${err}`);
+          setWeather("");
+          // // if we get an error, set paragraph to "City not found"
+          // setParagraph("City not found");
+        })
+        .finally(() => {
+          // The request has been made and the loading spinner should now stop spinning.
+        });
+    }
+  }, [searchedCity]);
 
   const handleInput = (e) => {
     setCity(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSearchCity(city);
-    console.log(searchCity);
-    setCity("");
-    // console.log(`You submitted ${city}`);
-    // console.log("weather:", weather);
-    // console.log("apikey:", process.env.REACT_APP_API_KEY);
+    // If the input is empty, we don't want to do anything
+    if (city.length === "") {
+      setParagraph("You must enter a city!");
+    } else {
+      setSearchedCity(city);
+      setCity("");
+    }
   };
 
   return (
     <div className="page">
       <div className="child">
-        {weather.name ? (
-          <WeatherBox weather={weather} />
-        ) : (
-          <p className="searchP">Search for a city!</p>
+        {!weather.name && <p>{paragraph}</p>}
+        {weather.name && (
+          <WeatherBox
+            weather={weather}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
         )}
         <div className="formdiv">
           <form onSubmit={handleSubmit}>
