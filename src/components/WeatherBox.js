@@ -18,7 +18,7 @@ const WeatherBox = ({ weather, isLoading, setIsLoading }) => {
   return (
     <div className="weatherdiv">
       {weather.name && (
-        <div>
+        <div className="">
           {isLoading ? (
             <>
               <ClipLoader size={90} color="black" />
