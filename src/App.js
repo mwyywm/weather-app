@@ -41,8 +41,13 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // If the input is empty, we don't want to do anything
-    if (city.length === "") {
+    // or if the city and searchedCity are the same
+    if (
+      city.length === 1 ||
+      city.toLocaleUpperCase() === searchedCity.toLocaleUpperCase()
+    ) {
       setParagraph("You must enter a city!");
+      setCity("");
     } else {
       setSearchedCity(city);
       setCity("");
