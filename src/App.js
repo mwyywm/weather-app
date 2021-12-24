@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     // useEffect was called when the site was launched so I had to wrap it in a if statement.
-    if (searchedCity.length > 0) {
+    if (searchedCity.length > 1) {
       axios
         .get(
           `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&APPID=${process.env.REACT_APP_API_KEY}`
@@ -24,13 +24,9 @@ function App() {
           // console.log(`res.data: ${JSON.stringify(res.data)}`);
         })
         .catch((err) => {
-          console.log(`Error: ${err}`);
+          // console.log(`Error: ${err}`);
           setWeather("");
-          // // if we get an error, set paragraph to "City not found"
-          // setParagraph("City not found");
-        })
-        .finally(() => {
-          // The request has been made and the loading spinner should now stop spinning.
+          setParagraph("That city could not be found. Try again!");
         });
     }
   }, [searchedCity]);
@@ -43,7 +39,7 @@ function App() {
     // If the input is empty, we don't want to do anything
     // or if the city and searchedCity are the same
     if (
-      city.length === 1 ||
+      city.length < 1 ||
       city.toLocaleUpperCase() === searchedCity.toLocaleUpperCase()
     ) {
       setParagraph("You must enter a city!");
