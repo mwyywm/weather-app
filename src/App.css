@@ -90,7 +90,6 @@ form {
 
 input[type="text"] {
   width: 100%;
-  max-width: fit-content;
   height: 20px;
   font-size: 18px;
   border: none;
